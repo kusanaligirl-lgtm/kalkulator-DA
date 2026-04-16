@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Deret Aritmatika - Antigravity</title>
+    <!-- Modern web font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated background elements for premium feel -->
+    <div class="background-animation">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Deret <span>Aritmatika</span></h1>
+            <p>Hitung Suku ke-n (U<sub>n</sub>) dan Jumlah n Suku (S<sub>n</sub>)</p>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <button class="tab-btn active" data-tab="basic-calc">Kalkulator Dasar</button>
+            <button class="tab-btn" data-tab="advanced-calc">Sistem Persamaan</button>
+        </div>
+
+        <!-- TAB: Basic Calculator -->
+        <div id="basic-calc" class="tab-content active">
+            <!-- Glassmorphism interactive panel -->
+            <div class="calculator-card glass-panel">
+                <div class="input-group">
+                    <label for="first-term">Suku Pertama (a)</label>
+                    <input type="number" id="first-term" placeholder="Contoh: 2" step="any">
+                </div>
+
+                <div class="input-group">
+                    <label for="difference">Beda (b)</label>
+                    <input type="number" id="difference" placeholder="Contoh: 3" step="any">
+                </div>
+
+                <div class="input-group">
+                    <label for="term-n">Suku ke-n (n)</label>
+                    <input type="number" id="term-n" placeholder="Contoh: 10" min="1" step="1">
+                </div>
+
+                <button id="calculate-btn" class="glow-btn">Hitung Sekarang</button>
+            </div>
+
+            <!-- Result display panel -->
+            <div id="results" class="results-card glass-panel hidden">
+                <h2>Hasil Perhitungan</h2>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">Suku ke-n (U<sub>n</sub>)</span>
+                        <span class="result-value" id="res-un">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Jumlah n Suku (S<sub>n</sub>)</span>
+                        <span class="result-value" id="res-sn">-</span>
+                    </div>
+                </div>
+                <div class="result-details">
+                    <h3>Nilai Deret:</h3>
+                    <p id="res-series" class="series-text">-</p>
+
+                    <h3>Langkah Penyelesaian U<sub>n</sub>:</h3>
+                    <p id="res-un-formula" class="formula-text">-</p>
+
+                    <h3>Langkah Penyelesaian S<sub>n</sub>:</h3>
+                    <p id="res-sn-formula" class="formula-text">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Advanced Calculator -->
+        <div id="advanced-calc" class="tab-content">
+            <div class="calculator-card glass-panel">
+                <div class="input-group full-width">
+                    <label for="adv-type">Tipe Informasi yang Diketahui</label>
+                    <select id="adv-type" class="glass-select">
+                        <option value="U">2 Suku (Un)</option>
+                        <option value="S">2 Jumlah (Sn)</option>
+                    </select>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="adv-n1">n ke-</label>
+                        <input type="number" id="adv-n1" placeholder="Contoh: 4" min="1" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="adv-v1">Nilai</label>
+                        <input type="number" id="adv-v1" placeholder="Contoh: -2" step="any">
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="adv-n2">n ke-</label>
+                        <input type="number" id="adv-n2" placeholder="Contoh: 10" min="1" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="adv-v2">Nilai</label>
+                        <input type="number" id="adv-v2" placeholder="Contoh: -26" step="any">
+                    </div>
+                </div>
+
+                <div class="divider">TARGET PENCARIAN</div>
+
+                <div class="input-group full-width">
+                    <label for="adv-target-n">Suku / Jumlah ke-n (Target U<sub>n</sub> & S<sub>n</sub>)</label>
+                    <input type="number" id="adv-target-n" placeholder="Contoh: 100" min="1" step="1" value="100">
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="adv-range-start">Rentang Suku Awal</label>
+                        <input type="number" id="adv-range-start" placeholder="Contoh: 101" min="1" step="1"
+                            value="101">
+                    </div>
+                    <div class="input-group">
+                        <label for="adv-range-end">Rentang Suku Akhir</label>
+                        <input type="number" id="adv-range-end" placeholder="Contoh: 1000" min="1" step="1"
+                            value="1000">
+                    </div>
+                </div>
+
+                <button id="adv-calculate-btn" class="glow-btn accent-2-btn">Selesaikan Persamaan</button>
+            </div>
+
+            <!-- Advanced Result Panel -->
+            <div id="adv-results" class="results-card glass-panel hidden">
+                <h2>Hasil Sistem Persamaan</h2>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">Suku Pertama (a)</span>
+                        <span class="result-value" id="adv-res-a">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Beda (b)</span>
+                        <span class="result-value" id="adv-res-b">-</span>
+                    </div>
+                </div>
+
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">Target U<sub><span id="lbl-target-n1">n</span></sub></span>
+                        <span class="result-value" id="adv-res-un">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Target S<sub><span id="lbl-target-n2">n</span></sub></span>
+                        <span class="result-value" id="adv-res-sn">-</span>
+                    </div>
+                </div>
+
+                <div class="result-details">
+                    <h3>Jumlah Suku ke-<span id="lbl-range-start">...</span> s/d ke-<span id="lbl-range-end">...</span>:
+                    </h3>
+                    <div class="result-item"
+                        style="margin-top: 10px; background: rgba(99, 102, 241, 0.1); border-color: var(--accent-1);">
+                        <span class="result-value" id="adv-res-range" style="font-size: 2rem;">-</span>
+                    </div>
+
+                    <h3>Rumus yang Digunakan:</h3>
+                    <p id="adv-res-formula" class="formula-text" style="font-size: 0.95rem;">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
