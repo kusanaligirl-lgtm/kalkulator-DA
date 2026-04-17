@@ -1,80 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // === TAB LOGIC ===
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active from all
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            // Add active to current
-            btn.classList.add('active');
-            const targetId = btn.getAttribute('data-tab');
-            document.getElementById(targetId).classList.add('active');
-        });
-    });
-
-    // === BASIC CALCULATOR LOGIC ===
-    const btn = document.getElementById('calculate-btn');
-    const resultsPanel = document.getElementById('results');
-
-    btn.addEventListener('click', () => {
-        const a = parseFloat(document.getElementById('first-term').value);
-        const b = parseFloat(document.getElementById('difference').value);
-        const n = parseInt(document.getElementById('term-n').value);
-
-        if (isNaN(a) || isNaN(b) || isNaN(n) || n < 1) {
-            alert("⚠️ Mohon masukkan semua nilai dengan benar. (Nilai n harus bilangan bulat ≥ 1)");
-            return;
-        }
-
-        const un = a + (n - 1) * b;
-        const sn = (n / 2) * (2 * a + (n - 1) * b);
-        const formatNumber = (num) => Number.isInteger(num) ? num : parseFloat(num.toFixed(4));
-
-        let series = [];
-        let limit = Math.min(n, 10);
-        for (let i = 0; i < limit; i++) {
-            series.push(formatNumber(a + i * b));
-        }
-        let seriesText = series.join(', ');
-        if (n > 10) seriesText += `, ... , ${formatNumber(un)}`;
-
-        resultsPanel.style.opacity = 0;
-        resultsPanel.classList.remove('hidden');
-
-        setTimeout(() => {
-            document.getElementById('res-un').innerText = formatNumber(un);
-            document.getElementById('res-sn').innerText = formatNumber(sn);
-            document.getElementById('res-series').innerText = seriesText;
-
-            const formulaUn = `U<sub>${n}</sub> = a + (n-1)b <br>
-                               U<sub>${n}</sub> = ${a} + (${n}-1) &times; (${b}) <br>
-                               U<sub>${n}</sub> = ${a} + (${n - 1}) &times; (${b}) <br>
-                               U<sub>${n}</sub> = <b>${formatNumber(un)}</b>`;
-
-            const formulaSn = `S<sub>${n}</sub> = n/2 &times; (2a + (n-1)b) <br>
-                               S<sub>${n}</sub> = ${n}/2 &times; (2(${a}) + (${n}-1)(${b})) <br>
-                               S<sub>${n}</sub> = ${n / 2} &times; (${2 * a} + ${n - 1}&times;(${b})) <br>
-                               S<sub>${n}</sub> = <b>${formatNumber(sn)}</b>`;
-
-            document.getElementById('res-un-formula').innerHTML = formulaUn;
-            document.getElementById('res-sn-formula').innerHTML = formulaSn;
-
-            resultsPanel.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            resultsPanel.style.transform = 'translateY(20px)';
-
-            requestAnimationFrame(() => {
-                resultsPanel.style.opacity = 1;
-                resultsPanel.style.transform = 'translateY(0)';
-            });
-
-            resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 50);
-    });
-
     // === ADVANCED CALCULATOR LOGIC ===
     const advBtn = document.getElementById('adv-calculate-btn');
     const advResultsPanel = document.getElementById('adv-results');
@@ -136,10 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetSn = calcSn(targetN);
 
         let rangeSum = 0;
+        formulaText += `<br><br><span style="color:var(--accent-2); font-weight:bold; font-size:1.1rem;">Langkah Pencarian Target:</span><br>`;
+        formulaText += `U<sub>${targetN}</sub> = a + (${targetN}-1)b <br>
+            &nbsp;&nbsp;= ${formatNumber(a)} + (${targetN - 1})&times;(${formatNumber(b)}) = <b>${formatNumber(targetUn)}</b><br><br>`;
+        formulaText += `S<sub>${targetN}</sub> = (${targetN}/2) &times; (2a + (${targetN}-1)b) <br>
+            &nbsp;&nbsp;= (${targetN}/2) &times; (2(${formatNumber(a)}) + (${targetN - 1})(${formatNumber(b)})) = <b>${formatNumber(targetSn)}</b><br><br>`;
+
+        formulaText += `<span style="color:var(--accent-2); font-weight:bold; font-size:1.1rem;">Langkah Jumlah Suku ke-${rStart} s/d ke-${rEnd}:</span><br>`;
         if (rStart <= 1) {
             rangeSum = calcSn(rEnd);
+            formulaText += `Karena rentang dimulai dari suku awal, cukup hitung S<sub>${rEnd}</sub> = <b>${formatNumber(rangeSum)}</b>`;
         } else {
             rangeSum = calcSn(rEnd) - calcSn(rStart - 1);
+            formulaText += `Total Rentang = S<sub>${rEnd}</sub> - S<sub>${rStart - 1}</sub> <br>
+            S<sub>${rEnd}</sub> = ${formatNumber(calcSn(rEnd))} <br>
+            S<sub>${rStart - 1}</sub> = ${formatNumber(calcSn(rStart - 1))} <br>
+            Total = ${formatNumber(calcSn(rEnd))} - ${formatNumber(calcSn(rStart - 1))} = <b>${formatNumber(rangeSum)}</b>`;
         }
 
         document.getElementById('lbl-target-n1').innerText = targetN;
